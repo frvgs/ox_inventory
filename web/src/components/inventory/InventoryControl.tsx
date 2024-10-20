@@ -8,12 +8,14 @@ import { onGive } from '../../dnd/onGive';
 import { fetchNui } from '../../utils/fetchNui';
 import { Locale } from '../../store/locale';
 import UsefulControls from './UsefulControls';
+import ServerInfos from './ServerInfos';
 
 const InventoryControl: React.FC = () => {
   const itemAmount = useAppSelector(selectItemAmount);
   const dispatch = useAppDispatch();
 
   const [infoVisible, setInfoVisible] = useState(false);
+  const [serverVisible, setServerVisible] = useState(false);
 
   const [, use] = useDrop<DragSource, void, any>(() => ({
     accept: 'SLOT',
@@ -38,32 +40,47 @@ const InventoryControl: React.FC = () => {
   return (
     <>
       <UsefulControls infoVisible={infoVisible} setInfoVisible={setInfoVisible} />
+      <ServerInfos serverVisible={serverVisible} setServerVisible={setServerVisible} />
       <div className="inventory-control">
         <div className="inventory-control-wrapper">
-          <input
-            className="inventory-control-input"
-            type="number"
-            defaultValue={itemAmount}
-            onChange={inputHandler}
-            min={0}
-          />
+          <img className="InventoryLogo" src="https://cdn.frvgs.com/assets/custom/InventoryLogo.svg" />
+          <div className="inventory-control-input-WR">
+            <input
+              className="inventory-control-input"
+              type="number"
+              defaultValue={itemAmount}
+              onChange={inputHandler}
+              min={0}
+            />
+          </div>
           <button className="inventory-control-button" ref={use}>
-            {Locale.ui_use || 'Use'}
+            <div className="inventory-control-buttonTxt">
+              {Locale.ui_use || 'Use'}
+            </div>
           </button>
           <button className="inventory-control-button" ref={give}>
-            {Locale.ui_give || 'Give'}
+            <div className="inventory-control-buttonTxt">
+              {Locale.ui_give || 'Give'}
+            </div>
           </button>
           <button className="inventory-control-button" onClick={() => fetchNui('exit')}>
-            {Locale.ui_close || 'Close'}
+            <div className="inventory-control-buttonTxt">
+              {Locale.ui_close || 'Close'}
+            </div>
+          </button>
+          <div className="inventory-control-separator"></div>
+          <button className="inventory-control-button" onClick={() => setInfoVisible(true)}>
+            <div className="inventory-control-buttonTxt">
+              {Locale.ui_info || 'Infos'}
+            </div>
+          </button>
+          <button className="inventory-control-button" onClick={() => setServerVisible(true)}>
+            <div className="inventory-control-buttonTxt">
+              {Locale.ui_info || 'Server'}
+            </div>
           </button>
         </div>
       </div>
-
-      <button className="useful-controls-button" onClick={() => setInfoVisible(true)}>
-        <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 524 524">
-          <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
-        </svg>
-      </button>
     </>
   );
 };

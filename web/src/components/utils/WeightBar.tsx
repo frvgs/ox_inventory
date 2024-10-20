@@ -15,9 +15,9 @@ const colorMixer = (rgbA: number[], rgbB: number[], amountToMix: number) => {
 
 const COLORS = {
   // Colors used - https://materialui.co/flatuicolors
-  primaryColor: [231, 76, 60], // Red (Pomegranate)
-  secondColor: [39, 174, 96], // Green (Nephritis)
-  accentColor: [211, 84, 0], // Orange (Oragne)
+  primaryColor: [255, 23, 68], // Red 
+  secondColor: [0, 209, 170], // Green
+  accentColor: [255, 111, 0], // Orange
 };
 
 const WeightBar: React.FC<{ percent: number; durability?: boolean }> = ({ percent, durability }) => {
@@ -28,22 +28,30 @@ const WeightBar: React.FC<{ percent: number; durability?: boolean }> = ({ percen
           ? colorMixer(COLORS.accentColor, COLORS.primaryColor, percent / 100)
           : colorMixer(COLORS.secondColor, COLORS.accentColor, percent / 100)
         : percent > 50
-        ? colorMixer(COLORS.primaryColor, COLORS.accentColor, percent / 100)
-        : colorMixer(COLORS.accentColor, COLORS.secondColor, percent / 50),
+          ? colorMixer(COLORS.primaryColor, COLORS.accentColor, percent / 100)
+          : colorMixer(COLORS.accentColor, COLORS.secondColor, percent / 50),
     [durability, percent]
   );
 
-  return (
-    <div className={durability ? 'durability-bar' : 'weight-bar'}>
-      <div
-        style={{
-          visibility: percent > 0 ? 'visible' : 'hidden',
-          height: '100%',
-          width: `${percent}%`,
-          backgroundColor: color,
-          transition: `background ${0.3}s ease, width ${0.3}s ease`,
-        }}
-      ></div>
+  const barContent = (
+    <div
+      style={{
+        visibility: percent > 0 ? 'visible' : 'hidden',
+        height: '100%',
+        width: `${percent}%`,
+        backgroundColor: color,
+        transition: `background ${0.3}s ease, width ${0.3}s ease`,
+      }}
+    ></div>
+  );
+
+  return durability ? (
+    <div className="durability-bar">{barContent}</div>
+  ) : (
+    <div className="weight-bar-wrapper">
+      <div className="weight-bar-WR">
+        <div className="weight-bar">{barContent}</div>
+      </div>
     </div>
   );
 };

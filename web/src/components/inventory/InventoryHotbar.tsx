@@ -30,9 +30,6 @@ const InventoryHotbar: React.FC = () => {
         {items.map((item) => (
           <div
             className="hotbar-item-slot"
-            style={{
-              backgroundImage: `url(${item?.name ? getItemUrl(item as SlotWithItem) : 'none'}`,
-            }}
             key={`hotbar-${item.slot}`}
           >
             {isSlotWithItem(item) && (
@@ -51,9 +48,15 @@ const InventoryHotbar: React.FC = () => {
                             })}g `
                         : ''}
                     </p>
-                    <p>{item.count ? item.count.toLocaleString('en-us') + `x` : ''}</p>
+                    <span>{item.count ? item.count.toLocaleString('en-us') + `x` : ''}</span>
                   </div>
                 </div>
+                <div
+                  className="item-image"
+                  style={{
+                    backgroundImage: `url(${item?.name ? getItemUrl(item as SlotWithItem) : 'none'})`,
+                  }}
+                />
                 <div>
                   {item?.durability !== undefined && <WeightBar percent={item.durability} durability />}
                   <div className="inventory-slot-label-box">
